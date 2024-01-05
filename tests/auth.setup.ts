@@ -1,14 +1,21 @@
 import { test as setup } from '@playwright/test' ;
+import user from '../.auth/user.json'
+import fs from 'fs'
 
 const authFile = '.auth/user.json'
 
-setup ('authentification', async({page}) => {
-await page.goto('https://angular.realworld.how/'); //Эта строка переходит на указанный веб-сайт https://angular.realworld.io/, который будет использоваться для выполнения тестов.
-   await page.getByText('Sign in').click()
-   await page.getByRole('textbox', {name: "Email"}).fill('shadowpn+2@gmail.com')
-   await page.getByRole('textbox', {name: "Password"}).fill('nata_1982')
-   await page.getByRole('button').click()
-   await page.waitForResponse('https://api.realworld.io/api/tags')
+setup ('authentification', async({request}) => {
 
-   await page.context().storageState({path: authFile})
+const response = await request.post('https://api.realworld.io/api/users/login', {
+    data: {
+      "user":{"email":"shadowpn+2@gmail.com","password":"nata_1982"}
+    }
+  })
+  const responseBody = await response.json()
+  const accessToken = responseBody.user.token
+  
+  user.origins[0].localStorage[0].value = accessToken
+  fs.writeFileSync(authFile, JSON.stringify(user))
+  
+  process.env['ACCESS_TOKEN'] = accessToken
 })

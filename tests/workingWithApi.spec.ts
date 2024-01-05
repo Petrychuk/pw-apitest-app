@@ -31,14 +31,6 @@ test('has title', async ({ page }) => {
 
 test('Delete article', async ({page, request}) => {
   
-  const response = await request.post('https://api.realworld.io/api/users/login', {
-    data: {
-      "user":{"email":"shadowpn+2@gmail.com","password":"nata_1982"}
-    }
-  })
-  const responseBody = await response.json()
-  const accessToken = responseBody.user.token
-  
   const articleResponse = await request.post('https://api.realworld.io/api/articles/', {
     data:{
       "article":{
@@ -46,10 +38,8 @@ test('Delete article', async ({page, request}) => {
                 "title": "This is test article", 
                 "description": "This is test description", 
                 "body": "This a test body"}
-              },
-    headers: {
-       Authorization: `Token ${accessToken}`
-    }
+              }
+   
   })
   expect(articleResponse.status()).toEqual(201)
   await page.getByText('Global Feed').click()
@@ -76,20 +66,9 @@ test('create article', async({page, request}) => {
   await page.getByText('Home').click()
   await page.getByText('Global Feed').click()
   await expect(page.locator('app-article-list h1').first()).toContainText('Playwright is awesome')
-
-  const response = await request.post('https://api.realworld.io/api/users/login', {
-    data: {
-      "user":{"email":"shadowpn+2@gmail.com","password":"nata_1982"}
-    }
-  })
-  const responseBody = await response.json()
-  const accessToken = responseBody.user.token
   
-  const deleteArticleResponse = await request.delete(`https://api.realworld.io/api/articles/${slugId}`, {
-    headers: {
-       Authorization: `Token ${accessToken}`
-    }
-  })
+  const deleteArticleResponse = await request.delete(`https://api.realworld.io/api/articles/${slugId}`)
+  
   expect(deleteArticleResponse.status()).toEqual(204)
 
   await page.reload()
