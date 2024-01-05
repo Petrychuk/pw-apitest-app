@@ -1,4 +1,4 @@
-import { test, expect, request } from '@playwright/test';
+import { test, expect, request } from '@playwright/test'
 import tags from '../test-data/tags.json'
 
 test.beforeEach( async({page}) => { //Это блок кода, который выполняется перед каждым тестом. Он определяет, какие маршруты будут перехвачены во время тестов.
@@ -9,10 +9,7 @@ test.beforeEach( async({page}) => { //Это блок кода, который �
     })
   
    await page.goto('https://angular.realworld.how/'); //Эта строка переходит на указанный веб-сайт https://angular.realworld.io/, который будет использоваться для выполнения тестов.
-   await page.getByText('Sign in').click()
-   await page.getByRole('textbox', {name: "Email"}).fill('shadowpn+2@gmail.com')
-   await page.getByRole('textbox', {name: "Password"}).fill('nata_1982')
-   await page.getByRole('button').click()
+   
   })
 
 test('has title', async ({ page }) => {
