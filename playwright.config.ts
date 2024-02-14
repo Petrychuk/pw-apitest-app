@@ -40,9 +40,20 @@ export default defineConfig({
       testMatch: 'auth.setup.ts',
     },
     {
-      name: 'chromium',
+      name: 'setupArticle',
+      testMatch: 'newArticle.setup.ts',
+      dependencies: ['setup']
+    },
+    {
+      name: 'regression',
       use: { ...devices['Desktop Chrome'], storageState: '.auth/user.json' },
       dependencies: ['setup']
+    },
+    {
+      name: 'likesCounter',
+      testMatch: 'likesCounter.spec.ts',
+      use: { ...devices['Desktop Chrome'], storageState: '.auth/user.json' },
+      dependencies: ['setupArticle']
     },
 
     {
