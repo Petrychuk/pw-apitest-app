@@ -2,7 +2,7 @@ import { test as setup, expect } from '@playwright/test';
 
 
 setup('create new article', async({ request }) => {
-     const articleResponse = await request.post('https://api.realworld.io/api/articles/', {
+    const articleResponse = await request.post('https://api.realworld.io/api/articles/', {
     data:{
       "article":{
                 "tagList":[], 
